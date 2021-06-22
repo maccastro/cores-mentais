@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { connectToDatabase } from  '../../../utils/mongodb';
+const connectToDatabase = require ('../../../utils/mongodb');
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {

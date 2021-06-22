@@ -15,7 +15,7 @@
     "jsx": "preserve",
     "outDir":"dist"
   },
-  "include": ["src", "index.js"],
+  "include": ["src", "index.cjs"],
   "exclude": [
     "**/*.spec.ts",
     "**/*test.ts"

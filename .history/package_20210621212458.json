@@ -2,9 +2,10 @@
   "name": "with-typescript",
   "version": "1.0.0",
   "scripts": {
-    "start": "next start",
-    "build": "next build",
-    "dev": "next"
+    "start": "node ./src/index",
+    "build": "rimraf dist && tsc",
+    "dev": "next",
+    "type-check": "tsc"
   },
   "dependencies": {
     "-": "0.0.1",

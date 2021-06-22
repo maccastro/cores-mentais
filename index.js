@@ -34,38 +34,38 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import Link from 'next/link';
-import Layout from '../../components/Layout';
-import List from '../../components/List';
-import axios from 'axios';
-var WithStaticProps = function (_a) {
-    var items = _a.items;
-    return (<Layout title='Users List | Next.js + TypeScript Example'>
-    <h1>Users List</h1>
-    <p>
-      Example fetching data from inside <code>getStaticProps()</code>.
-    </p>
-    <p>You are currently on: /users</p>
-    <List items={items}/>
-    <p>
-      <Link href='/'>
-        <a>Go home</a>
-      </Link>
-    </p>
-  </Layout>);
-};
-export var getServerSideProps = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var response, items;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, axios.get('http://localhost:3000/api/users')];
-            case 1:
-                response = _a.sent();
-                return [4 /*yield*/, response.data];
+import {  connectToDatabase } from '../../../utils/mongodb';
+var handler = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var method, _a, db, data, err_1;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _b.trys.push([0, 6, , 7]);
+                method = req.method;
+                _a = method;
+                switch (_a) {
+                    case 'GET': return [3 /*break*/, 1];
+                }
+                return [3 /*break*/, 4];
+            case 1: return [4 /*yield*/, connectToDatabase()];
             case 2:
-                items = _a.sent();
-                return [2 /*return*/, { props: { items: items } }];
+                db = (_b.sent()).db;
+                return [4 /*yield*/, db.collection('user').find().toArray()];
+            case 3:
+                data = _b.sent();
+                res.status(200).json(data);
+                return [3 /*break*/, 5];
+            case 4:
+                res.setHeader('Allow', ['GET', 'PUT']);
+                res.status(405).end("Method " + method + " Not Allowed");
+                _b.label = 5;
+            case 5: return [3 /*break*/, 7];
+            case 6:
+                err_1 = _b.sent();
+                res.status(500).json({ statusCode: 500, message: err_1.message });
+                return [3 /*break*/, 7];
+            case 7: return [2 /*return*/];
         }
     });
 }); };
-export default WithStaticProps;
+export default handler;

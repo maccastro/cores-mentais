@@ -34,53 +34,38 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import { sampleUserData } from '../../utils/sample-data';
-import Layout from '../../components/Layout';
-import ListDetail from '../../components/ListDetail';
-var StaticPropsDetail = function (_a) {
-    var item = _a.item, errors = _a.errors;
-    if (errors) {
-        return (<Layout title="Error | Next.js + TypeScript Example">
-        <p>
-          <span style={{ color: 'red' }}>Error:</span> {errors}
-        </p>
-      </Layout>);
-    }
-    return (<Layout title={(item ? item.name : 'User Detail') + " | Next.js + TypeScript Example"}>
-      {item && <ListDetail item={item}/>}
-    </Layout>);
-};
-export default StaticPropsDetail;
-export var getStaticPaths = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var paths;
-    return __generator(this, function (_a) {
-        paths = sampleUserData.map(function (user) { return ({
-            params: { id: user.id.toString() },
-        }); });
-        // We'll pre-render only these paths at build time.
-        // { fallback: false } means other routes should 404.
-        return [2 /*return*/, { paths: paths, fallback: false }];
+const connectToDatabase = require('../../../utils/mongodb');
+var handler = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var method, _a, db, data, err_1;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _b.trys.push([0, 6, , 7]);
+                method = req.method;
+                _a = method;
+                switch (_a) {
+                    case 'GET': return [3 /*break*/, 1];
+                }
+                return [3 /*break*/, 4];
+            case 1: return [4 /*yield*/, connectToDatabase()];
+            case 2:
+                db = (_b.sent()).db;
+                return [4 /*yield*/, db.collection('user').find().toArray()];
+            case 3:
+                data = _b.sent();
+                res.status(200).json(data);
+                return [3 /*break*/, 5];
+            case 4:
+                res.setHeader('Allow', ['GET', 'PUT']);
+                res.status(405).end("Method " + method + " Not Allowed");
+                _b.label = 5;
+            case 5: return [3 /*break*/, 7];
+            case 6:
+                err_1 = _b.sent();
+                res.status(500).json({ statusCode: 500, message: err_1.message });
+                return [3 /*break*/, 7];
+            case 7: return [2 /*return*/];
+        }
     });
 }); };
-// This function gets called at build time on server-side.
-// It won't be called on client-side, so you can even do
-// direct database queries.
-export var getStaticProps = function (_a) {
-    var params = _a.params;
-    return __awaiter(void 0, void 0, void 0, function () {
-        var id_1, item;
-        return __generator(this, function (_b) {
-            try {
-                id_1 = params === null || params === void 0 ? void 0 : params.id;
-                item = sampleUserData.find(function (data) { return data.id === Number(id_1); });
-                // By returning { props: item }, the StaticPropsDetail component
-                // will receive `item` as a prop at build time
-                return [2 /*return*/, { props: { item: item } }];
-            }
-            catch (err) {
-                return [2 /*return*/, { props: { errors: err.message } }];
-            }
-            return [2 /*return*/];
-        });
-    });
-};
+export default handler;

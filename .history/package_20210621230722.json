@@ -2,8 +2,8 @@
   "name": "with-typescript",
   "version": "1.0.0",
   "scripts": {
-    "start": "next start",
-    "build": "next build",
+    "start": "node",
+    "build": "rimraf dist && tsc",
     "dev": "next"
   },
   "dependencies": {

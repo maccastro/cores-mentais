@@ -1,9 +1,10 @@
 {
   "name": "with-typescript",
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
-    "start": "next start",
-    "build": "next build",
+    "start": "node index.js",
+    "build": "rimraf dist && tsc",
     "dev": "next"
   },
   "dependencies": {

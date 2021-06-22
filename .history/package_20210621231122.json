@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "next start",
-    "build": "next build",
+    "build": "rimraf dist && tsc",
     "dev": "next"
   },
   "dependencies": {
